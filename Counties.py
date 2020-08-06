@@ -19,3 +19,12 @@ df1["Date"] = datetime[0]
 
 # print(df1["Date"])
 print(df1.head())
+
+# get unique county names
+x = pd.unique(df1["CountyName"])
+
+# Create the x position of the bars
+x_pos = [i for i, _ in enumerate(x)]
+# x_pos = list(range(len(x)))
+print(x_pos)
+
