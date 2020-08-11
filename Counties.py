@@ -31,6 +31,13 @@ for county in counties:
 x_pos = [i for i, _ in enumerate(counties)]
 # x_pos = list(range(len(counties))) # alternative
 
-plt.bar(x_pos, cases_per_county, color='red')
-plt.xticks(x_pos, counties, rotation=45)
+# Create the bar chart
+plt.style.use('ggplot')
+plt.barh(x_pos, cases_per_county, color='red')
+plt.ylabel("County")
+plt.xlabel("Number of Cases")
+plt.title("Covid-19 Cases per County in the Republic of Ireland")
+
+plt.yticks(x_pos, counties)
+
 plt.show()
