@@ -8,23 +8,29 @@ df = pd.read_csv(DATASET)
 # print(df.head(3))  
 
 # select relevant columns
-df1 = df[["CountyName", "PopulationCensus16", "ConfirmedCovidCases", "PopulationProportionCovidCases", "ConfirmedCovidDeaths", "ConfirmedCovidRecovered"]].copy()
+df1 = df[["CountyName", "PopulationCensus16", "ConfirmedCovidCases"]].copy()
 
+# Create a properly formatted date column
 # split the timestamp to seperate time and date
 # the expand parameter is set to True, which means it will return a data frame with all separated strings in different columns.
+# extract the date into a new columns
 datetime = df["TimeStamp"].str.split(" ", n=1, expand=True)
-
-# extract the date into a new column
 df1["Date"] = datetime[0]
 
-# print(df1["Date"])
-print(df1.head())
+# get list of unique county names 
+counties = pd.unique(df1["CountyName"])
 
-# get unique county names
-x = pd.unique(df1["CountyName"])
+cases_per_county = []
 
-# Create the x position of the bars
-x_pos = [i for i, _ in enumerate(x)]
-# x_pos = list(range(len(x)))
-print(x_pos)
+# get the latest number of cases per county
+for county in counties:
+   county_df = df1[df1.CountyName == county]
+   cases_per_county.append(county_df['ConfirmedCovidCases'].iloc[-1])
 
+# Create the x position for county labels
+x_pos = [i for i, _ in enumerate(counties)]
+# x_pos = list(range(len(counties))) # alternative
+
+plt.bar(x_pos, cases_per_county, color='red')
+plt.xticks(x_pos, counties, rotation=45)
+plt.show()
